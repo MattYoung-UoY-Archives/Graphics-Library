@@ -21,6 +21,11 @@ public class Main {
 		panes.add(mainPane);
 		
 		Window window = new Window(WIDTH, HEIGHT, panes);
+		
+		window.createWindow();
+		
+		window.closeWindow();
+		
 	}
 	
 }

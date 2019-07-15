@@ -2,6 +2,12 @@ package mjy.graphics;
 
 import java.util.List;
 
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.ContextAttribs;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
+
 import mjy.graphics.gui.Pane;
 
 /**
@@ -31,6 +37,26 @@ public class Window {
 		this.width = width;
 		this.height = height;
 		this.panes = panes;
+	}
+	
+	public void createWindow() {
+		ContextAttribs attribs = new ContextAttribs(3, 3).withForwardCompatible(true).withProfileCore(true);
+		try {
+			Display.setDisplayMode(new DisplayMode(width, height));
+			Display.create();
+			Display.setTitle("temp title");
+		}catch (LWJGLException e) {
+			e.printStackTrace();
+		}
+		GL11.glViewport(0, 0, width, height);
+	}
+	
+	public void closeWindow() {
+		Display.destroy();
+	}
+	
+	public boolean exitPressed() {
+		return Display.isCloseRequested();
 	}
 	
 }
