@@ -15,14 +15,17 @@ public class Main {
 	}
 	
 	private Main() {
-		Pane mainPane = new Pane(1, WIDTH, HEIGHT);
+		
+		Window window = new Window(WIDTH, HEIGHT);
+		
+		Pane mainPane = new Pane(1, 200, 560, WIDTH, HEIGHT);
+		Pane frontPane = new Pane(300, 100, 0, 400, 100, WIDTH, HEIGHT);
 		
 		List<Pane> panes = new ArrayList<Pane>();
 		panes.add(mainPane);
+		panes.add(frontPane);
 		
-		Window window = new Window(WIDTH, HEIGHT, panes);
-		
-		window.createWindow();
+		window.setPanes(panes);
 		
 		while(!window.exitPressed()) {
 			window.update();

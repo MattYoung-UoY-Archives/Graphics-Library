@@ -9,7 +9,7 @@ import mjy.graphics.gui.Pane;
 /**
  * Calls the OpenGL methods required to render the contents of the panes to the screen.
  * 
- * @since 15/07/2019
+ * @since 16/07/2019
  * @author Matt Young
  */
 class Renderer {
@@ -31,9 +31,17 @@ class Renderer {
 	/**
 	 * Renders the panes to the screen.
 	 * @param panes Panes to render to the screen.
+	 * 
+	 * @throws NullPointerException if the panes list has not been set.
 	 */
 	protected void render(List<Pane> panes) {
-		
+		try {
+			panes.forEach(t -> t.render());
+		}catch(NullPointerException e) {
+			e = new NullPointerException("The panes list of the window needs to be set before attempting to update!");
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 	
 }

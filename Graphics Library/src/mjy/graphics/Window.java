@@ -14,7 +14,7 @@ import mjy.graphics.gui.Pane;
 /**
  * This class implements a window in which the graphics can be rendered.
  * 
- * @since 15/07/2019
+ * @since 16/07/2019
  * @author Matt Young
  */
 public class Window {
@@ -35,20 +35,21 @@ public class Window {
 	private Renderer renderer;
 	
 	/**
-	 * Sets the panes to display on the screen.
+	 * Creates the window.
 	 * 
-	 * @param panes Panes to display.
+	 * @param width Width of the window in pixels.
+	 * @param height Height of the window in pixels.
 	 */
-	public Window(int width, int height, List<Pane> panes) {
+	public Window(int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.panes = panes;
+		createWindow();
 	}
 	
 	/**
 	 * Creates the window.
 	 */
-	public void createWindow() {
+	private void createWindow() {
 		//Sets the OpenGL version and profile.
 		ContextAttribs attribs = new ContextAttribs(3, 3).withForwardCompatible(true).withProfileCore(true);
 		try {
@@ -83,9 +84,19 @@ public class Window {
 	}
 	
 	/**
+	 * Sets the list of panes to be used.
+	 * 
+	 * @param panes List of panes to be used.
+	 */
+	public void setPanes(List<Pane> panes) {
+		this.panes = panes;
+	}
+	
+	/**
 	 * Closes the window.
 	 */
 	public void closeWindow() {
+		for(Pane pane: panes) pane.cleanUp();
 		Display.destroy();
 	}
 	
