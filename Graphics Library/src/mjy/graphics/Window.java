@@ -1,5 +1,6 @@
 package mjy.graphics;
 
+import java.awt.Color;
 import java.util.List;
 
 import org.lwjgl.LWJGLException;
@@ -8,8 +9,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
-
-import mjy.graphics.gui.Pane;
 
 /**
  * This class implements a window in which the graphics can be rendered.
@@ -34,15 +33,18 @@ public class Window {
 	 */
 	private Renderer renderer;
 	
+	private Color background;
+	
 	/**
 	 * Creates the window.
 	 * 
 	 * @param width Width of the window in pixels.
 	 * @param height Height of the window in pixels.
 	 */
-	public Window(int width, int height) {
+	public Window(int width, int height, Color background) {
 		this.width = width;
 		this.height = height;
+		this.background = background;
 		createWindow();
 	}
 	
@@ -69,11 +71,20 @@ public class Window {
 	}
 	
 	/**
+	 * Prepares the screen for the next frame.
+	 * Should be called before every frame.
+	 */
+	private void prepare() {
+		GL11.glClearColor(background.getRed()/255f, background.getGreen()/255f, background.getBlue()/255f, 1.0f);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+	}
+	
+	/**
 	 * Updates the window with the current contents of the panes.
 	 */
 	public void update() {
-		//Prepares the renderer.
-		renderer.prepare();
+		//Clears the screen.
+		prepare();
 		
 		//Renders the panes.
 		renderer.render(panes);
@@ -96,7 +107,7 @@ public class Window {
 	 * Closes the window.
 	 */
 	public void closeWindow() {
-		for(Pane pane: panes) pane.cleanUp();
+		panes.forEach(p -> p.cleanUp());
 		Display.destroy();
 	}
 	

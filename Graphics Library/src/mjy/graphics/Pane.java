@@ -1,4 +1,10 @@
-package mjy.graphics.gui;
+package mjy.graphics;
+
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
 
 /**
  * This class implements a pane which can be used to section off different parts of the gui.
@@ -19,6 +25,13 @@ public class Pane {
 	 */
 	private Quad quad;
 	
+	private Color background;
+	
+	/**
+	 * List of quads to render to the pane.
+	 */
+	private List<Quad> quads = new ArrayList<Quad>();
+	
 	/**
 	 * Creates a pane with the specified dimensions, at the x and y coordinates provided, on the specified layer.
 	 * 
@@ -32,7 +45,7 @@ public class Pane {
 	 * 
 	 * @throws IllegalArgumentException - if the value of layer is < 0.
 	 */
-	public Pane(int x, int y, int layer, int width, int height, int screenW, int screenH) {
+	public Pane(int x, int y, int layer, int width, int height, int screenW, int screenH, Color background) {
 		this.x = x;
 		this.y = y;
 		if(layer < 0) try {
@@ -44,6 +57,7 @@ public class Pane {
 		this.width = width;
 		this.height = height;
 		this.quad = new Quad(x/(float) screenW, y/(float) screenH, width/(float) screenW, height/(float) screenH, layer);
+		this.background = background;
 	}
 	
 	/**
@@ -54,14 +68,32 @@ public class Pane {
 	 * @param layer The layer of the pane. Layer 0 is the front most layer.
 	 */
 	public Pane(int layer, int width, int height, int screenW, int screenH) {
-		this(0, 0, layer, width, height, screenW, screenH);
+		this(0, 0, layer, width, height, screenW, screenH, new Color((int) (255 * 0.8f)));
+	}
+	
+	public void setQuads(List<Quad> quads) {
+		this.quads = quads;
 	}
 	
 	/**
 	 * Renders the pane.
 	 */
 	public void render() {
+		//Bind FBO
+		//prepare();
+		//quads.forEach(q -> q.render());
+		//Unbind FBO
+		
 		quad.render();
+	}
+	
+	/**
+	 * Prepares the screen for the next frame.
+	 * Should be called before every frame.
+	 */
+	private void prepare() {
+		GL11.glClearColor(background.getRed()/255f, background.getGreen()/255f, background.getBlue()/255f, 1.0f);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 	}
 	
 	/**

@@ -1,4 +1,4 @@
-package mjy.graphics.gui;
+package mjy.graphics;
 
 import java.nio.FloatBuffer;
 
@@ -14,10 +14,10 @@ import mjy.maths.Maths;
 /**
  * Implements the OpenGL description of a quadrilateral.
  * 
- * @since 16/07/2019
+ * @since 18/07/2019
  * @author Matt Young
  */
-class Quad {
+public class Quad {
 
 	/**
 	 * The vao and vbo ids and the number of vertices.
